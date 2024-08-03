@@ -35,17 +35,18 @@ public class MustUseTypeAnalyzer : DiagnosticAnalyzer
         foreach (var parameter in methodDeclaration.ParameterList.Parameters)
         {
             var parameterSymbol = semanticModel.GetDeclaredSymbol(parameter);
+            
             if (parameterSymbol == null) continue;
 
             var parameterType = parameterSymbol.Type;
-            if (HasMustUseAttribute(parameterType))
-            {
-                if (!IsParameterProperlyUsedOrPassed(methodDeclaration, parameterSymbol, semanticModel))
-                {
-                    var diagnostic = Diagnostic.Create(Rule, parameter.GetLocation(), parameter.Identifier.Text);
-                    context.ReportDiagnostic(diagnostic);
-                }
-            }
+            
+            if (!HasMustUseAttribute(parameterType)) continue;
+            
+            if (IsParameterProperlyUsedOrPassed(methodDeclaration, parameterSymbol, semanticModel)) continue;
+            
+            var diagnostic = Diagnostic.Create(Rule, parameter.GetLocation(), parameter.Identifier.Text);
+            
+            context.ReportDiagnostic(diagnostic);
         }
     }
 
@@ -58,7 +59,7 @@ public class MustUseTypeAnalyzer : DiagnosticAnalyzer
     {
         var parameterUsages = methodDeclaration.DescendantNodes()
             .OfType<IdentifierNameSyntax>()
-            .Where(id => semanticModel.GetSymbolInfo(id).Symbol?.Equals(parameterSymbol) == true);
+            .Where(id => SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbolInfo(id).Symbol, parameterSymbol));
 
         return parameterUsages.Any(usage => IsProperlyUsed(usage, semanticModel) || IsPassedToMethod(usage));
     }
