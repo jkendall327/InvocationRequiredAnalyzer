@@ -5,6 +5,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
+namespace MustCallDelegateAnalyzer;
+
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class MustUseTypeAnalyzer : DiagnosticAnalyzer
 {
@@ -15,7 +17,7 @@ public class MustUseTypeAnalyzer : DiagnosticAnalyzer
     private static readonly LocalizableString Description = "Parameters of types marked with [MustUse] should be used within the method or passed to another method.";
     private const string Category = "Usage";
 
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId,
+    internal static readonly DiagnosticDescriptor Rule = new(DiagnosticId,
         Title,
         MessageFormat,
         Category,
