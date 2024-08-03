@@ -1,9 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>JKendall.MustCallDelegateAnalyzer</PackageId>
+        <PackageVersion>1.0.0.0</PackageVersion>
+        <Authors>Your Name</Authors>
+        <PackageLicenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</PackageLicenseUrl>
+        <PackageProjectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</PackageProjectUrl>
+        <PackageIconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</PackageIconUrl>
+        <RepositoryUrl>http://REPO_URL_HERE_OR_DELETE_THIS_LINE</RepositoryUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <Description>MustCall delegate analyzer</Description>
+        <PackageReleaseNotes>First release</PackageReleaseNotes>
+        <Copyright>Copyright</Copyright>
+        <PackageTags>MustCallDelegateAnalyzer, analyzers</PackageTags>
+        <NoPackageAnalysis>true</NoPackageAnalysis>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.8" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.3.1" PrivateAssets="all" />
+    </ItemGroup>
 
 </Project>
