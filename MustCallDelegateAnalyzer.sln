@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MustCallDelegateAnalyzer", "MustCallDelegateAnalyzer\MustCallDelegateAnalyzer.csproj", "{1974B7BB-A48A-43F2-AE00-CEC7D7ACA49B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MustCallDelegateAnalyzer.Tests", "MustCallDelegateAnalyzer.Tests\MustCallDelegateAnalyzer.Tests.csproj", "{83365592-09AA-4B7D-B201-76EE87CF0A92}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1974B7BB-A48A-43F2-AE00-CEC7D7ACA49B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1974B7BB-A48A-43F2-AE00-CEC7D7ACA49B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1974B7BB-A48A-43F2-AE00-CEC7D7ACA49B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1974B7BB-A48A-43F2-AE00-CEC7D7ACA49B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83365592-09AA-4B7D-B201-76EE87CF0A92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83365592-09AA-4B7D-B201-76EE87CF0A92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83365592-09AA-4B7D-B201-76EE87CF0A92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83365592-09AA-4B7D-B201-76EE87CF0A92}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
