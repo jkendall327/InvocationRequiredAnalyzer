@@ -5,8 +5,10 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
+namespace MustCallDelegateAnalyzer;
+
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public class MustUseTypeAnalyzer : DiagnosticAnalyzer
+public class InvocationRequiredAnalyzer : DiagnosticAnalyzer
 {
     public const string DiagnosticId = "MustUseType";
 

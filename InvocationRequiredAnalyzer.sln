@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MustCallDelegateAnalyzer", "MustCallDelegateAnalyzer\MustCallDelegateAnalyzer.csproj", "{1974B7BB-A48A-43F2-AE00-CEC7D7ACA49B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvocationRequiredAnalyzer", "InvocationRequiredAnalyzer\InvocationRequiredAnalyzer.csproj", "{1974B7BB-A48A-43F2-AE00-CEC7D7ACA49B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MustCallDelegateAnalyzer.Tests", "MustCallDelegateAnalyzer.Tests\MustCallDelegateAnalyzer.Tests.csproj", "{83365592-09AA-4B7D-B201-76EE87CF0A92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvocationRequiredAnalyzer.Tests", "InvocationRequiredAnalyzer.Tests\InvocationRequiredAnalyzer.Tests.csproj", "{83365592-09AA-4B7D-B201-76EE87CF0A92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

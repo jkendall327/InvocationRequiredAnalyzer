@@ -1,18 +1,17 @@
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
 
 namespace MustCallDelegateAnalyzer.Tests;
 
-public class MustUseAnalyzerTests
+public class InvocationRequiredAnalyzerTests
 {
-    private readonly DiagnosticResult _result = new DiagnosticResult(MustUseTypeAnalyzer.Rule)
+    private readonly DiagnosticResult _result = new DiagnosticResult(InvocationRequiredAnalyzer.Rule)
         .WithArguments("callback");
     
     [Fact]
     public async Task AnalyzerTriggers_WhenMustUseType_IsArgToEmptyMethod()
     {
-        var context = new CSharpAnalyzerTest<MustUseTypeAnalyzer, DefaultVerifier>
+        var context = new CSharpAnalyzerTest<InvocationRequiredAnalyzer, DefaultVerifier>
         {
             TestCode = """
                        using System;
@@ -43,7 +42,7 @@ public class MustUseAnalyzerTests
     [Fact]
     public async Task AnalyzerDoesNotTrigger_WhenMustUseType_IsInvokedAsMethod()
     {
-        var context = new CSharpAnalyzerTest<MustUseTypeAnalyzer, DefaultVerifier>
+        var context = new CSharpAnalyzerTest<InvocationRequiredAnalyzer, DefaultVerifier>
         {
             TestCode = """
                        using System;
@@ -70,7 +69,7 @@ public class MustUseAnalyzerTests
     [Fact]
     public async Task AnalyzerDoesNotTrigger_WhenMustUseType_IsInvokedExplicitly()
     {
-        var context = new CSharpAnalyzerTest<MustUseTypeAnalyzer, DefaultVerifier>
+        var context = new CSharpAnalyzerTest<InvocationRequiredAnalyzer, DefaultVerifier>
         {
             TestCode = """
                        using System;
@@ -97,7 +96,7 @@ public class MustUseAnalyzerTests
     [Fact]
     public async Task AnalyzerDoesNotTrigger_WhenMustUseType_IsPassedToOtherMethod_AndThenInvoked()
     {
-        var context = new CSharpAnalyzerTest<MustUseTypeAnalyzer, DefaultVerifier>
+        var context = new CSharpAnalyzerTest<InvocationRequiredAnalyzer, DefaultVerifier>
         {
             TestCode = """
                        using System;
@@ -129,7 +128,7 @@ public class MustUseAnalyzerTests
     [Fact]
     public async Task AnalyzerTriggers_WhenMustUseType_IsPassedToOtherMethod_AndThenNotInvoked()
     {
-        var context = new CSharpAnalyzerTest<MustUseTypeAnalyzer, DefaultVerifier>
+        var context = new CSharpAnalyzerTest<InvocationRequiredAnalyzer, DefaultVerifier>
         {
             TestCode = """
                        using System;
@@ -165,7 +164,7 @@ public class MustUseAnalyzerTests
     [Fact]
     public async Task AnalyzerTriggers_WhenMustUseType_IsOnlyStoredInVariable()
     {
-        var context = new CSharpAnalyzerTest<MustUseTypeAnalyzer, DefaultVerifier>
+        var context = new CSharpAnalyzerTest<InvocationRequiredAnalyzer, DefaultVerifier>
         {
             TestCode = """
                        using System;
