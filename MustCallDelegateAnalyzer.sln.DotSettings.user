@@ -1,6 +1,11 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d347903d_002Dc578_002D4ffe_002D903c_002D5cef02c1f238/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::83365592-09AA-4B7D-B201-76EE87CF0A92::net8.0::MustCallDelegateAnalyzer.Tests.MustUseAnalyzerTests.Test&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::83365592-09AA-4B7D-B201-76EE87CF0A92::net8.0::MustCallDelegateAnalyzer.Tests.MustUseAnalyzerTests.AnalyzerTriggers_WhenMustUseType_IsArgToEmptyMethod&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::83365592-09AA-4B7D-B201-76EE87CF0A92::net8.0::MustCallDelegateAnalyzer.Tests.MustUseAnalyzerTests.AnalyzerDoesNotTrigger_WhenMustUseType_IsInvokedAsMethod&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::83365592-09AA-4B7D-B201-76EE87CF0A92::net8.0::MustCallDelegateAnalyzer.Tests.MustUseAnalyzerTests.AnalyzerDoesNotTrigger_WhenMustUseType_IsInvokedExplicitly&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::83365592-09AA-4B7D-B201-76EE87CF0A92::net8.0::MustCallDelegateAnalyzer.Tests.MustUseAnalyzerTests.AnalyzerDoesNotTrigger_WhenMustUseType_IsPassedToOtherMethod_AndThenInvoked&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::83365592-09AA-4B7D-B201-76EE87CF0A92::net8.0::MustCallDelegateAnalyzer.Tests.MustUseAnalyzerTests.AnalyzerTriggers_WhenMustUseType_IsPassedToOtherMethod_AndThenNotInvoked&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::83365592-09AA-4B7D-B201-76EE87CF0A92::net8.0::MustCallDelegateAnalyzer.Tests.MustUseAnalyzerTests.AnalyzerTriggers_WhenMustUseType_IsOnlyStoredInVariable&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
