@@ -1,21 +1,18 @@
-﻿using System.Linq;
-
-namespace MustCallDelegateAnalyzer;
-
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public class MustUseAnalyzer : DiagnosticAnalyzer
+public class MustUseTypeAnalyzer : DiagnosticAnalyzer
 {
-    public const string DiagnosticId = "MustUse";
+    public const string DiagnosticId = "MustUseType";
 
-    private static readonly LocalizableString Title = "Marked parameter not used";
-    private static readonly LocalizableString MessageFormat = "The parameter '{0}' marked with [MustUse] was not used or passed to another method";
-    private static readonly LocalizableString Description = "Parameters marked with [MustUse] should be used within the method or passed to another method.";
+    private static readonly LocalizableString Title = "MustUse type not used";
+    private static readonly LocalizableString MessageFormat = "The parameter '{0}' of type marked with [MustUse] was not used or passed to another method";
+    private static readonly LocalizableString Description = "Parameters of types marked with [MustUse] should be used within the method or passed to another method.";
     private const string Category = "Usage";
 
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId,
@@ -44,10 +41,11 @@ public class MustUseAnalyzer : DiagnosticAnalyzer
         foreach (var parameter in methodDeclaration.ParameterList.Parameters)
         {
             var parameterSymbol = semanticModel.GetDeclaredSymbol(parameter);
-            
             if (parameterSymbol == null) continue;
 
-            if (!HasMustUseAttribute(parameterSymbol) || IsParameterUsedOrPassed(methodDeclaration, parameterSymbol, semanticModel))
+            var parameterType = parameterSymbol.Type;
+            
+            if (!HasMustUseAttribute(parameterType) || IsParameterUsedOrPassed(methodDeclaration, parameterSymbol, semanticModel))
             {
                 continue;
             }
@@ -57,9 +55,9 @@ public class MustUseAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private bool HasMustUseAttribute(IParameterSymbol parameterSymbol)
+    private bool HasMustUseAttribute(ITypeSymbol typeSymbol)
     {
-        return parameterSymbol.GetAttributes().Any(attr => attr.AttributeClass?.Name == "MustUseAttribute");
+        return typeSymbol.GetAttributes().Any(attr => attr.AttributeClass?.Name == "MustUseAttribute");
     }
 
     private bool IsParameterUsedOrPassed(MethodDeclarationSyntax methodDeclaration, IParameterSymbol parameterSymbol, SemanticModel semanticModel)
