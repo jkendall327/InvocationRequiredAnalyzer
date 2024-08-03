@@ -66,34 +66,21 @@ public class MustUseTypeAnalyzer : DiagnosticAnalyzer
     private bool IsProperlyUsed(IdentifierNameSyntax identifierName, SemanticModel semanticModel)
     {
         var parent = identifierName.Parent;
-
-        // Check if it's invoked
+        
+        // Check if it's invoked implicitly (i.e. myfunc()).
         if (parent is InvocationExpressionSyntax)
-            return true;
-
-        // Check if a member is accessed
-        if (parent is MemberAccessExpressionSyntax)
-            return true;
-
-        // Check if it's used in a way that's not just assignment or discard
-        if (parent is AssignmentExpressionSyntax assignment)
         {
-            // If it's on the right side of the assignment, it's not considered proper use
-            return assignment.Left == identifierName;
+            return true;
         }
 
-        // Check if it's not just discarded
-        if (parent is EqualsValueClauseSyntax equalsValue &&
-            equalsValue.Parent is VariableDeclaratorSyntax variableDeclarator &&
-            variableDeclarator.Identifier.Text == "_")
-        {
-            return false;
-        }
-
-        // Add more checks here as needed
-
-        // For any other usage, we'll consider it properly used
-        return true;
+        // Check if it's invoked via the .Invoke() method.
+        if (parent is not MemberAccessExpressionSyntax memberAccess) return false;
+        
+        if (memberAccess.Name.Identifier.Text != "Invoke") return false;
+            
+        var symbol = semanticModel.GetSymbolInfo(memberAccess).Symbol;
+            
+        return symbol is IMethodSymbol { MethodKind: MethodKind.DelegateInvoke };
     }
 
     private bool IsPassedToMethod(IdentifierNameSyntax identifierName)
