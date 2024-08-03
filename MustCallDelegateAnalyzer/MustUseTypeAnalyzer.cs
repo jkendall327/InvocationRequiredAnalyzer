@@ -5,27 +5,19 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace MustCallDelegateAnalyzer;
-
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class MustUseTypeAnalyzer : DiagnosticAnalyzer
 {
     public const string DiagnosticId = "MustUseType";
 
-    private static readonly LocalizableString Title = "MustUse type not used";
-    private static readonly LocalizableString MessageFormat = "The parameter '{0}' of type marked with [MustUse] was not used or passed to another method";
-    private static readonly LocalizableString Description = "Parameters of types marked with [MustUse] should be used within the method or passed to another method.";
+    private static readonly LocalizableString Title = "MustUse type not properly used";
+    private static readonly LocalizableString MessageFormat = "The parameter '{0}' of type marked with [MustUse] was not properly used or passed to another method";
+    private static readonly LocalizableString Description = "Parameters of types marked with [MustUse] should be invoked, have their members accessed, or be passed to another method.";
     private const string Category = "Usage";
 
-    internal static readonly DiagnosticDescriptor Rule = new(DiagnosticId,
-        Title,
-        MessageFormat,
-        Category,
-        DiagnosticSeverity.Warning,
-        isEnabledByDefault: true,
-        description: Description);
+    internal static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(Rule); } }
 
     public override void Initialize(AnalysisContext context)
     {
@@ -46,14 +38,14 @@ public class MustUseTypeAnalyzer : DiagnosticAnalyzer
             if (parameterSymbol == null) continue;
 
             var parameterType = parameterSymbol.Type;
-            
-            if (!HasMustUseAttribute(parameterType) || IsParameterUsedOrPassed(methodDeclaration, parameterSymbol, semanticModel))
+            if (HasMustUseAttribute(parameterType))
             {
-                continue;
+                if (!IsParameterProperlyUsedOrPassed(methodDeclaration, parameterSymbol, semanticModel))
+                {
+                    var diagnostic = Diagnostic.Create(Rule, parameter.GetLocation(), parameter.Identifier.Text);
+                    context.ReportDiagnostic(diagnostic);
+                }
             }
-
-            var diagnostic = Diagnostic.Create(Rule, parameter.GetLocation(), parameter.Identifier.Text);
-            context.ReportDiagnostic(diagnostic);
         }
     }
 
@@ -62,19 +54,46 @@ public class MustUseTypeAnalyzer : DiagnosticAnalyzer
         return typeSymbol.GetAttributes().Any(attr => attr.AttributeClass?.Name == "MustUseAttribute");
     }
 
-    private bool IsParameterUsedOrPassed(MethodDeclarationSyntax methodDeclaration, IParameterSymbol parameterSymbol, SemanticModel semanticModel)
+    private bool IsParameterProperlyUsedOrPassed(MethodDeclarationSyntax methodDeclaration, IParameterSymbol parameterSymbol, SemanticModel semanticModel)
     {
         var parameterUsages = methodDeclaration.DescendantNodes()
             .OfType<IdentifierNameSyntax>()
             .Where(id => semanticModel.GetSymbolInfo(id).Symbol?.Equals(parameterSymbol) == true);
 
-        return parameterUsages.Any(usage => IsUsed(usage) || IsPassedToMethod(usage));
+        return parameterUsages.Any(usage => IsProperlyUsed(usage, semanticModel) || IsPassedToMethod(usage));
     }
 
-    private bool IsUsed(IdentifierNameSyntax identifierName)
+    private bool IsProperlyUsed(IdentifierNameSyntax identifierName, SemanticModel semanticModel)
     {
-        // This is a simplified check. You might want to expand this based on your specific requirements.
-        return !(identifierName.Parent is ArgumentSyntax);
+        var parent = identifierName.Parent;
+
+        // Check if it's invoked
+        if (parent is InvocationExpressionSyntax)
+            return true;
+
+        // Check if a member is accessed
+        if (parent is MemberAccessExpressionSyntax)
+            return true;
+
+        // Check if it's used in a way that's not just assignment or discard
+        if (parent is AssignmentExpressionSyntax assignment)
+        {
+            // If it's on the right side of the assignment, it's not considered proper use
+            return assignment.Left == identifierName;
+        }
+
+        // Check if it's not just discarded
+        if (parent is EqualsValueClauseSyntax equalsValue &&
+            equalsValue.Parent is VariableDeclaratorSyntax variableDeclarator &&
+            variableDeclarator.Identifier.Text == "_")
+        {
+            return false;
+        }
+
+        // Add more checks here as needed
+
+        // For any other usage, we'll consider it properly used
+        return true;
     }
 
     private bool IsPassedToMethod(IdentifierNameSyntax identifierName)

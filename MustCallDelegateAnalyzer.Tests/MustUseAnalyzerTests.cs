@@ -161,4 +161,35 @@ public class MustUseAnalyzerTests
         
         await context.RunAsync();
     }
+    
+    [Fact]
+    public async Task AnalyzerTriggers_WhenMustUseType_IsOnlyStoredInVariable()
+    {
+        var context = new CSharpAnalyzerTest<MustUseTypeAnalyzer, DefaultVerifier>
+        {
+            TestCode = """
+                       using System;
+
+                       [AttributeUsage(AttributeTargets.Delegate)]
+                       public class MustUseAttribute : Attribute { }
+
+                       [MustUse]
+                       public delegate void ImportantCallback();
+
+                       public class TestClass
+                       {
+                           public void PassCallback(ImportantCallback callback)
+                           {
+                               _ = callback;
+                           }
+                       }
+                       """,
+        };
+
+        var result = _result.WithSpan(11, 30, 11, 56);
+        
+        context.ExpectedDiagnostics.Add(result);
+        
+        await context.RunAsync();
+    }
 }
